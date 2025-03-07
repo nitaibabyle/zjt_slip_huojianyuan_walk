@@ -1,0 +1,258 @@
+<mujoco model="springleg">
+  <compiler angle="radian" autolimits="true"/>
+  <default/>
+  <asset>
+    <mesh name="torso" file="torso.STL"/>
+    <mesh name="rhip_linkage" file="rhip_linkage.STL"/>
+    <mesh name="rfem_linkage" file="rfem_linkage.STL"/>
+    <mesh name="rtib_linkage" file="rtib_linkage.STL"/>
+    <mesh name="rfoot_linkage" file="rfoot_linkage.STL"/>
+    <mesh name="rmotor_linkage" file="rmotor_linkage.STL"/>
+    <mesh name="rpush_linkage" file="rpush_linkage.STL"/>
+    <mesh name="lhip_linkage" file="lhip_linkage.STL"/>
+    <mesh name="lfem_linkage" file="lfem_linkage.STL"/>
+    <mesh name="ltib_linkage" file="ltib_linkage.STL"/>
+    <mesh name="lfoot_linkage" file="lfoot_linkage.STL"/>
+    <mesh name="lmotor_linkage" file="lmotor_linkage.STL"/>
+    <mesh name="lpush_linkage" file="lpush_linkage.STL"/>
+     <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+
+        <texture name="texgeom" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+            rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+
+        <material name="matgeom" texture="texgeom" texuniform="true" rgba="0.8 0.6 .4 1"/>
+  </asset>
+
+  <option timestep="0.001" iterations="50" tolerance="1e-10" solver="Newton" jacobian="dense" cone="pyramidal"/>
+
+     <visual>
+      <map force="0.1" zfar="30"/>
+      <rgba haze="0.15 0.25 0.35 1"/>
+      <quality shadowsize="2048"/>
+      <global offwidth="800" offheight="800"/>
+  </visual>
+
+
+  <worldbody>
+
+    <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="matplane" condim="3"/>
+
+    <light directional="false" diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 0 30" dir="0 0 -1" castshadow="false"/>
+
+    <body name= "torso" pos="0 0 0.85">
+      <freejoint name="floatbase"/>
+      <inertial pos="0 0 0.15" quat="1 0 0 0"
+      mass="50.7616034596736" diaginertia="0.290501424863317	0.259453115704016	0.110844296891057"/>
+      <geom type="mesh" rgba="0.3 0.4 0.95 1" mesh="torso"/>
+      <site name = "site_imu" size = "0.01" pos = "0.0000000 0.00000000 0.000000"/>
+
+      <body name="rhip_linkage" pos="0.155 -0.1218 -0.052" quat="0.707107 0 0 0.707107" gravcomp="0">
+        <inertial pos="0.0937072 -0.0762481 0.000314276" quat="-0.012333 0.702284 -0.0139005 0.711655" mass="0.750428" diaginertia="0.001725 0.00168956 0.000981747"/>
+        <joint name="rhip_roll" pos="0 0 0" axis="1 0 0" limited="true" range="-1.14 1.14" damping="1" armature = "0.1"/>
+        <geom type="mesh" rgba="1 0.1 0.4 1" mesh="rhip_linkage"/>
+        <body name="rfem_linkage" pos="0.1126 -0.046 0" gravcomp="0">
+          <inertial pos="-0.00907837 0.046 -0.150443" quat="0.999882 0 0.015352 0" mass="0.752951" diaginertia="0.00677772 0.00585966 0.00159087"/>
+          <joint name="rfem_pitch" pos="0 0 0" axis="0 1 0" limited="true" range="-2.14 2.14" damping="1" armature = "0.1"/>
+          <geom type="mesh" rgba="0.2 0.2 0.4 1" mesh="rfem_linkage"/>
+          <site name = "site_rspring_point1" size = "0.01" pos = "-0.0200000 0.07500000 -0.250000"/>
+        <site name = "site_rspring_point2" size = "0.01" pos = "-0.0200000 0.01500000 -0.250000"/>
+        <site name = "site_rspring_point5" size = "0.01" pos = "-0.0100000 0.04500000 -0.24000"/>
+          <body name="rtib_linkage" pos="-0.02 0.0525 -0.35" gravcomp="0">
+            <inertial pos="-0.00432828 -0.0065013 -0.130768" quat="0.999896 2.73075e-07 0.0144425 1.89058e-05" mass="0.79591" diaginertia="0.00537109 0.00532164 0.000176269"/>
+            <joint name="rtib_pitch" pos="0 0 0" axis="0 -1 0" limited="true" range="-2 -0.1" damping="1" armature = "0.1"/>
+            <geom type="mesh" rgba="0.4 0.8 0.3 1" mesh="rtib_linkage"/>
+            <site name = "site_rspring_point3" size = "0.01" pos = "-0.0100000 0.0200000 0.060000"/>
+          <site name = "site_rspring_point4" size = "0.01" pos = "-0.0100000 -0.0200000 0.060000"/>
+          <site name = "site_rspring_point6" size = "0.01" pos = "-0.0150000 -0.0100000 -0.040000"/>
+          <site name = "site_rforcesensor" size = "0.01" pos = "-0.0000000 0.00000000 -0.35000000"/>
+            <body name="rfoot_linkage" pos="-0.010295 -0.0065 -0.319834" quat="0.999871 0 0.016088 0" gravcomp="0">
+              <inertial pos="-0.000874353 -8.1981e-06 -0.043559" quat="-3.69307e-05 0.707076 3.36076e-05 0.707138" mass="0.289601" diaginertia="0.00131603 0.00117417 0.0001726"/>
+              <joint name="rfoot_pitch" pos="0 0 0" axis="0 1 0" limited="true" range="-0.5 0.5" damping="1" armature = "0.1"/>
+              <geom type="mesh" rgba="0 0 0 1" mesh="rfoot_linkage"/>
+            </body>
+          </body>
+          <body name="rmotor_linkage" pos="0.025 0.046 -0.175" quat="0.98746 0 0.157868 0" gravcomp="0">
+            <inertial pos="0.000651157 6.04783e-08 0.0334679" quat="0.505867 0.505859 -0.494067 0.494069" mass="0.612606" diaginertia="0.000791379 0.000698857 0.000659067"/>
+            <joint name="rmotor_pitch" pos="0 0 0" axis="0 1 0"/>
+            <geom type="mesh" rgba="1 0.929412 0.384314 1" mesh="rmotor_linkage"/>
+            <body name="rpush_linkage" pos="0 0 0" gravcomp="0">
+              <inertial pos="-0.000471736 -1.47422e-06 -0.085898" quat="0.999994 1.44066e-05 0.00330192 -0.000615198" mass="0.0711155" diaginertia="6.04282e-05 5.88654e-05 1.08719e-05"/>
+              <joint name="rpush_linear" pos="0 0 0" axis="0 0 -1" type="slide"/>
+              <geom type="mesh" rgba="1 1 1 1" mesh="rpush_linkage"/>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="lhip_linkage" pos="-0.155 -0.1272 -0.052" quat="0.707107 0 0 0.707107" gravcomp="0">
+        <inertial pos="0.0991069 0.0762498 0.000315435" quat="0.0123232 0.702284 0.0138908 0.711655" mass="0.750413" diaginertia="0.00172502 0.00168957 0.000981751"/>
+        <joint name="lhip_roll" pos="0 0 0" axis="1 0 0" limited="true" range="-1.14 1.14" damping="1" armature = "0.1"/>
+        <geom type="mesh" rgba="1 0.1 0.4 1" mesh="lhip_linkage"/>
+        <body name="lfem_linkage" pos="0.118 0.046 0" gravcomp="0">
+          <inertial pos="-0.00923086 -0.0459646 -0.153212" quat="0.999882 0 0.0153517 0" mass="0.763546" diaginertia="0.00677979 0.00586023 0.00159295"/>
+          <joint name="lfem_pitch" pos="0 0 0" axis="0 -1 0" limited="true" range="-2.14 2.14" damping="1" armature = "0.1"/>
+          <geom type="mesh" rgba="0.2 0.2 0.4 1" mesh="lfem_linkage"/>
+          <site name = "site_lspring_point1" size = "0.01" pos = "-0.0200000 -0.07500000 -0.250000"/>
+          <site name = "site_lspring_point2" size = "0.01" pos = "-0.0200000 -0.01500000 -0.250000"/>
+          <site name = "site_lspring_point5" size = "0.01" pos = "-0.0100000 -0.04500000 -0.24000"/>
+
+           <body name="ltib_linkage" pos="-0.02 -0.0525 -0.35" gravcomp="0">
+            <inertial pos="-0.00456027 0.00649947 -0.138154" quat="0.999896 0 0.0144436 0" mass="0.836177" diaginertia="0.00538006 0.00533061 0.000181618"/>
+            <joint name="ltib_pitch" pos="0 0 0" axis="0 1 0" limited="true" range="0.1 2" damping="1" armature = "0.1"/>
+            <geom type="mesh" rgba="0.4 0.8 0.3 1" mesh="ltib_linkage"/>
+            <site name = "site_lspring_point3" size = "0.01" pos = "-0.0100000 -0.0200000 0.060000"/>
+            <site name = "site_lspring_point4" size = "0.01" pos = "-0.0100000 0.0200000 0.060000"/>
+            <site name = "site_lspring_point6" size = "0.01" pos = "-0.0150000 0.0100000 -0.040000"/>
+            <site name = "site_lforcesensor" size = "0.01" pos = "-0.0000000 0.00000000 -0.35000000"/>
+
+            <body name="lfoot_linkage" pos="-0.010295 0.0065 -0.319834" quat="0.999871 0 0.016088 0" gravcomp="0">
+              <inertial pos="-0.000874353 -8.1981e-06 -0.043559" quat="-3.69307e-05 0.707076 3.36076e-05 0.707138" mass="0.289601" diaginertia="0.00131603 0.00117417 0.0001726"/>
+              <joint name="lfoot_pitch" pos="0 0 0" axis="0 1 0" limited="true" range="-0.5 0.5" damping="1" armature = "0.1"/>
+              <geom type="mesh" rgba="0 0 0 1" mesh="lfoot_linkage"/>
+            </body>
+          </body> 
+          
+          <body name="lmotor_linkage" pos="0.025 -0.046 -0.175" quat="0.98746 0 0.157868 0" gravcomp="0">
+            <inertial pos="0.000651016 8.14919e-08 0.0334679" quat="0.505871 0.505863 -0.494063 0.494063" mass="0.612605" diaginertia="0.000791378 0.000698857 0.000659067"/>
+            <joint name="lmotor_pitch" pos="0 0 0" axis="0 -1 0"/>
+            <geom type="mesh" rgba="1 0.929412 0.384314 1" mesh="lmotor_linkage"/>
+            <body name="lpush_linkage" pos="0 0 0" gravcomp="0">
+              <inertial pos="-0.00046504 2.01141e-06 -0.0858979" quat="0.999992 5.94428e-07 0.00319272 0.0025794" mass="0.0711149" diaginertia="6.04283e-05 5.88661e-05 1.08726e-05"/>
+              <joint name="lpush_linear" pos="0 0 0" axis="0 0 -1" type="slide"/>
+              <geom type="mesh" rgba="1 1 1 1" mesh="lpush_linkage"/>
+            </body>
+          </body>
+
+      </body>
+    </body>
+  </body>
+  </worldbody>
+
+  
+  <equality>
+  
+		<connect anchor="-0.002 0 -0.14" body1="lpush_linkage" body2="ltib_linkage" name="equality_constraint1"/>
+    <connect anchor="-0.002 0 -0.14" body1="rpush_linkage" body2="rtib_linkage" name="equality_constraint2"/>
+	
+
+  </equality>
+
+
+  	<sensor>
+		<force name = "rforcesensor" site = "site_rforcesensor" cutoff = "2000.0"/>
+		<torque name = "rtorquesensor" site = "site_rforcesensor" cutoff = "2000.0"/>
+		<force name = "lforcesensor" site = "site_lforcesensor" cutoff = "2000.0"/>
+		<torque name = "ltorquesensor" site = "site_lforcesensor" cutoff = "2000.0"/>
+
+		<framequat     name='root-orient' objtype='site' objname='site_imu'/>
+		<gyro          name="root_gyro"        site="site_imu"  noise='5e-4' cutoff='34.9'/>
+		<accelerometer name = "root_accel"     site = "site_imu" noise='1e-2' cutoff='157'/>
+		<velocimeter   name = "root_veloc"     site = "site_imu" />
+
+		<framepos     name='imurealpos' objtype='site' objname='site_imu'/>
+		<framelinvel     name='imurealveloc' objtype='site' objname='site_imu'/>
+	</sensor>
+
+   <contact>
+		<exclude body1 = "torso" body2 = "rhip_linkage"/> 
+		<exclude body1 = "torso" body2 = "lhip_linkage"/>
+		<exclude body1 = "rhip_linkage" body2 = "rfem_linkage"/>
+		<exclude body1 = "rfem_linkage" body2 = "rtib_linkage"/>
+    <exclude body1 = "torso" body2 = "rfem_linkage"/> 
+		<exclude body1 = "torso" body2 = "lfem_linkage"/>
+
+		<exclude body1 = "lhip_linkage" body2 = "lfem_linkage"/>
+		<exclude body1 = "lfem_linkage" body2 = "ltib_linkage"/>
+
+    <exclude body1 = "ltib_linkage" body2 = "lfoot_linkage"/>
+		    <exclude body1 = "rtib_linkage" body2 = "rfoot_linkage"/>
+            <exclude body1 = "lfem_linkage" body2 = "rfem_linkage"/>
+		    <exclude body1 = "lfem_linkage" body2 = "rtib_linkage"/>
+        <exclude body1 = "rfem_linkage" body2 = "ltib_linkage"/>
+        <exclude body1 = "rfem_linkage" body2 = "lfoot_linkage"/>
+        <exclude body1 = "lfem_linkage" body2 = "rfoot_linkage"/>
+
+        <exclude body1 = "lfem_linkage" body2 = "lmotor_linkage"/>
+        <exclude body1 = "lfem_linkage" body2 = "lpush_linkage"/>
+         <exclude body1 = "ltib_linkage" body2 = "lpush_linkage"/>
+         <exclude body1 = "ltib_linkage" body2 = "lmotor_linkage"/>
+         <exclude body1 = "lpush_linkage" body2 = "lmotor_linkage"/>
+         <exclude body1 = "rfem_linkage" body2 = "rmotor_linkage"/>
+        <exclude body1 = "rfem_linkage" body2 = "rpush_linkage"/>
+         <exclude body1 = "rtib_linkage" body2 = "rpush_linkage"/>
+         <exclude body1 = "rtib_linkage" body2 = "rmotor_linkage"/>
+         <exclude body1 = "rpush_linkage" body2 = "rmotor_linkage"/>
+         <exclude body1 = "ltib_linkage" body2 = "rtib_linkage"/>
+
+         <exclude body1 = "rfoot_linkage" body2 = "rtib_linkage"/>
+         <exclude body1 = "rfoot_linkage" body2 = "ltib_linkage"/>
+         <exclude body1 = "rfoot_linkage" body2 = "lfoot_linkage"/>
+
+         <exclude body1 = "lfoot_linkage" body2 = "rtib_linkage"/>
+         <exclude body1 = "lfoot_linkage" body2 = "rtib_linkage"/>
+         <exclude body1 = "lfoot_linkage" body2 = "lfoot_linkage"/>
+
+
+
+		<!-- <pair name="medial_forfoot_fric" geom1="medial_toe" geom2="floor" friction="0.5 0.5 0.005 0.01 0.01"/>
+		<pair name="lateral_forefoot_fric" geom1="lateral_toe" geom2="floor" friction="0.5 0.5 0.005 0.01 0.01"/>
+    <pair name="hindfoot_fric" geom1="hindfoot" geom2="floor" friction="0.5 0.5 0.005 0.01 0.01"/> -->
+	</contact>
+
+  <tendon>
+    <spatial springlength="0.06" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_lspring_point1"/>
+      <site site="site_lspring_point3"/>
+    </spatial>
+
+    <spatial springlength="0.06" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_lspring_point2"/>
+      <site site="site_lspring_point4"/>
+    </spatial>
+
+    <spatial springlength="0.06" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_rspring_point1"/>
+      <site site="site_rspring_point3"/>
+    </spatial>
+
+    <spatial springlength="0.06" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_rspring_point2"/>
+      <site site="site_rspring_point4"/>
+    </spatial>
+
+    <spatial springlength="0.15" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_rspring_point5"/>
+      <site site="site_rspring_point6"/>
+    </spatial>
+
+    <spatial springlength="0.15" width="0.005" stiffness="20000" damping="100">
+    
+      <site site="site_lspring_point5"/>
+      <site site="site_lspring_point6"/>
+    </spatial>
+
+
+  </tendon>
+
+  <actuator>
+    <!-- <motor name="rhiproll"   gear="17.43"  joint="rhip_roll" />
+    <motor name="rfempitch"  gear="17.43"  joint="rfem_pitch" />
+    <motor name="rtibpitch"  gear="17.43"  joint="rtib_pitch" />
+    <motor name="rfootpitch" gear="17.43"  joint="rfoot_pitch" />
+    <motor name="lhiproll"   gear="17.43"  joint="lhip_roll" />
+    <motor name="lfempitch"  gear="17.43"  joint="lfem_pitch" />
+    <motor name="ltibpitch"  gear="17.43"  joint="ltib_pitch" />
+    <motor name="lfootpitch" gear="17.43"  joint="lfoot_pitch" /> -->
+  </actuator>
+
+
+
+
+
+</mujoco>
