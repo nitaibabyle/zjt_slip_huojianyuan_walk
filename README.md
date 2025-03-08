@@ -1,7 +1,16 @@
 # zjt_slip_huojianyuan_walk
-先锋杯行走机器人模型
+先锋杯大赛，参赛材料，效果演示+模型代码，控制代码在常规c++代码起初上针对性调参，实现了如下效果
+
+
+行走机器人模型
+
+
 video:
+
+
 跳上高台：
+
+
 
 ![跳上高台7 00_00_00-00_00_30](https://github.com/user-attachments/assets/1e933b3e-f667-43cf-8728-3987efe5c271)
 
